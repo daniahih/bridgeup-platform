@@ -103,11 +103,16 @@ const handleOAuthSuccess = (req, res) => {
     });
 
     // Redirect to frontend with success
-    const redirectUrl = `${process.env.CLIENT_URL}/auth-success?token=${token}`;
+    const baseUrl = process.env.CLIENT_URL || "http://localhost:3000";
+    const redirectUrl = `${baseUrl}/auth-success?token=${encodeURIComponent(
+      token
+    )}`;
+    console.log("OAuth redirect URL:", redirectUrl);
     res.redirect(redirectUrl);
   } catch (error) {
     console.error("OAuth success handler error:", error);
-    res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_failed`);
+    const baseUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+    res.redirect(`${baseUrl}/login?error=oauth_failed`);
   }
 };
 
