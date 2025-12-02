@@ -58,8 +58,11 @@ const SignupPage: React.FC = () => {
     try {
       setLoading(true);
       // Redirect to backend Google OAuth
-      const apiUrl =
-        import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+      const apiUrl = import.meta.env.VITE_API_URL || 
+        (window.location.hostname.includes('vercel.app') 
+          ? 'https://intuitive-insight-production.up.railway.app/api'
+          : 'http://localhost:5001/api');
+      console.log('Google OAuth URL:', `${apiUrl}/auth/google?role=${accountType}`);
       window.location.href = `${apiUrl}/auth/google?role=${accountType}`;
     } catch (error) {
       message.error("Google signup failed");
