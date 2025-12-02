@@ -54,3 +54,9 @@ jspm_packages/
 
 # Optional eslint cache
 .eslintcache
+# Development environment files
+backend/.env.development
+frontend/.env.development
+frontend/.env.local
+backend/.env.production
+frontend/.env.production

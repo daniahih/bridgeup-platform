@@ -22,15 +22,14 @@ const AuthSuccess: React.FC = () => {
 
         try {
           // Get user info from token or make API call
-          const response = await fetch(
-            "http://localhost:5000/api/auth/profile",
-            {
-              credentials: "include",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          const apiUrl =
+            import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+          const response = await fetch(`${apiUrl}/auth/profile`, {
+            credentials: "include",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
           if (response.ok) {
             const data = await response.json();

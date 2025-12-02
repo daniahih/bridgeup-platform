@@ -172,9 +172,11 @@ const LoginPage: React.FC = () => {
               size="large"
               icon={<GoogleOutlined />}
               className="social-button google-button"
-              onClick={() =>
-                (window.location.href = `http://localhost:5000/api/auth/google?role=${accountType}`)
-              }
+              onClick={() => {
+                const apiUrl =
+                  import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+                window.location.href = `${apiUrl}/auth/google?role=${accountType}`;
+              }}
             >
               Google
             </Button>
