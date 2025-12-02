@@ -75,7 +75,23 @@ const SignupPage: React.FC = () => {
   };
 
   const handleGithubSignup = async () => {
-    message.info("GitHub OAuth not configured yet. Please use email signup.");
+    try {
+      setLoading(true);
+      // Redirect to backend GitHub OAuth
+      const apiUrl =
+        import.meta.env.VITE_API_URL ||
+        (window.location.hostname.includes("vercel.app")
+          ? "https://intuitive-insight-production.up.railway.app/api"
+          : "http://localhost:5001/api");
+      console.log(
+        "GitHub OAuth URL:",
+        `${apiUrl}/auth/github?role=${accountType}`
+      );
+      window.location.href = `${apiUrl}/auth/github?role=${accountType}`;
+    } catch (error) {
+      message.error("GitHub signup failed");
+      setLoading(false);
+    }
   };
 
   return (

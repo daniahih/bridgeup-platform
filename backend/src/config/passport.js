@@ -57,6 +57,69 @@ if (
   );
 }
 
+// GitHub OAuth Strategy
+if (
+  process.env.GITHUB_CLIENT_ID &&
+  process.env.GITHUB_CLIENT_ID !== "placeholder_github_client_id"
+) {
+  const GitHubStrategy = require("passport-github2").Strategy;
+
+  passport.use(
+    new GitHubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL:
+          process.env.NODE_ENV === "production"
+            ? "https://intuitive-insight-production.up.railway.app/api/auth/github/callback"
+            : `http://localhost:${
+                process.env.PORT || 5000
+              }/api/auth/github/callback`,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          // Check if user already exists
+          let user = await User.findOne({
+            $or: [
+              { githubId: profile.id },
+              { email: profile.emails?.[0]?.value },
+            ],
+          });
+
+          if (user) {
+            // Update GitHub ID if not set
+            if (!user.githubId) {
+              user.githubId = profile.id;
+              await user.save();
+            }
+            return done(null, user);
+          }
+
+          // Create new user
+          const role = profile.state || "student"; // Get role from state parameter
+          user = new User({
+            name: profile.displayName || profile.username,
+            email:
+              profile.emails?.[0]?.value || `${profile.username}@github.local`,
+            githubId: profile.id,
+            role: role,
+            profilePicture: profile.photos?.[0]?.value,
+            isVerified: true,
+            track: role === "student" ? "Fullstack" : undefined,
+            companyName:
+              role === "company" ? profile.company || "GitHub User" : undefined,
+          });
+
+          await user.save();
+          done(null, user);
+        } catch (error) {
+          done(error, null);
+        }
+      }
+    )
+  );
+}
+
 // Basic passport serialization (required even without strategies)
 passport.serializeUser((user, done) => {
   done(null, user.id);

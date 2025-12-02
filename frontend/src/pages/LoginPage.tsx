@@ -197,8 +197,23 @@ const LoginPage: React.FC = () => {
                 )
               }
               className="social-button github-button"
-              disabled
-              onClick={() => message.info("OAuth not configured yet")}
+              disabled={accountType === "company"} // LinkedIn not implemented yet
+              onClick={() => {
+                if (accountType === "student") {
+                  const apiUrl =
+                    import.meta.env.VITE_API_URL ||
+                    (window.location.hostname.includes("vercel.app")
+                      ? "https://intuitive-insight-production.up.railway.app/api"
+                      : "http://localhost:5001/api");
+                  console.log(
+                    "GitHub OAuth URL:",
+                    `${apiUrl}/auth/github?role=${accountType}`
+                  );
+                  window.location.href = `${apiUrl}/auth/github?role=${accountType}`;
+                } else {
+                  message.info("LinkedIn OAuth not implemented yet");
+                }
+              }}
             >
               {accountType === "student" ? "GitHub" : "LinkedIn"}
             </Button>
