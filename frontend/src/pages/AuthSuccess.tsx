@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Spin, Result } from "antd";
-import { useAuth } from "../context/AuthContext";
 
 const AuthSuccess: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { state } = useAuth();
 
   useEffect(() => {
     const handleAuthSuccess = async () => {

@@ -11,7 +11,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import AuthSuccess from "./pages/AuthSuccess";
-import StudentDashboard from "./pages/StudentDashboard";
 
 const theme = {
   token: {
@@ -40,7 +39,10 @@ function App() {
                 path="/dashboard"
                 element={
                   <ProtectedRoute requiredRole="student">
-                    <StudentDashboard />
+                    <div style={{padding: '20px', textAlign: 'center'}}>
+                      <h2>Student Dashboard</h2>
+                      <p>Coming soon!</p>
+                    </div>
                   </ProtectedRoute>
                 }
               />
