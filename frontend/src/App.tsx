@@ -1,4 +1,3 @@
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -39,7 +38,7 @@ function App() {
                 path="/dashboard"
                 element={
                   <ProtectedRoute requiredRole="student">
-                    <div style={{padding: '20px', textAlign: 'center'}}>
+                    <div style={{ padding: "20px", textAlign: "center" }}>
                       <h2>Student Dashboard</h2>
                       <p>Coming soon!</p>
                     </div>
