@@ -111,7 +111,7 @@ const handleOAuthSuccess = (req, res) => {
     res.redirect(redirectUrl);
   } catch (error) {
     console.error("OAuth success handler error:", error);
-    const baseUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+    const baseUrl = process.env.CLIENT_URL || "http://localhost:3000";
     res.redirect(`${baseUrl}/login?error=oauth_failed`);
   }
 };
